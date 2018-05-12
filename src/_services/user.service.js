@@ -1,13 +1,38 @@
 import { authHeader, config } from '../_helpers';
 
-export const userService = {
-    login,
-    logout,
-    register,
-    getAll,
-    getById,
-    update,
-    delete: _delete
+export const groomerService = {
+    getAllGroomer,
+    getInfoOfGroomer,
+    addNewGroomer,
+    updateGroomer,
+    loginGroomer,
+    deleteGroomer,
+    logoutGroomer
+};
+
+export const breedTypeService = {
+    getAllBreed,
+    getInfoOfBreed,
+    addBreed,
+    deleteBreed
+};
+
+export const groomingTypeService = {
+    getAllGroomingType,
+    getInfoOfGroomingType,
+    AddGroomingType,
+    deleteGroomingType
+};
+
+
+export const clientService = {
+    getAllClientsInfo,
+    getClientInfo,
+    addNewClient,
+    updateClient,
+    loginClient,
+    deleteClient,
+    logoutClient
 };
 
 // Groomer request
@@ -36,7 +61,7 @@ function loginGroomer(email, password) {
     };
 
     return fetch(config.apiUrl + '/Groomer.svc/Authenticate/' + email + '/'+ password , requestOptions)
-            .then(handleResponse, handleError);
+            .then(handleResponse, handleError)
             .then(user => {
             // login successful if there's a jwt token in the response
                 if (user && user.token) {
@@ -50,6 +75,11 @@ function loginGroomer(email, password) {
 
 function deleteGroomer(index) {
     return postRequest('/Groomer.svc/Delete/' + index);
+}
+
+function logoutGroomer() {
+    // remove user from local storage to log user out
+    localStorage.removeItem('groomer');
 }
 
 //Breed
@@ -97,7 +127,7 @@ function getClientInfo(index) {
     return postRequest('/Client.svc/View/' + index);
 }
 
-function addClient(firstname, surname, email, password, homeAddress, mobilePh, workPhone, homePhone) {
+function addNewClient(firstname, surname, email, password, homeAddress, mobilePh, workPhone, homePhone) {
     var info = firstname + '/' + surname + '/' + email + '/' + password + '/' 
         + homeAddress + '/' + mobilePh + '/' + workPhone+ '/' + homePhone;
     return postRequest('/Client.svc/Add/' + info);
@@ -116,7 +146,7 @@ function loginClient(email, password) {
     };
 
     return fetch(config.apiUrl + '/Client.svc/Authenticate/' + email + '/'+ password , requestOptions)
-            .then(handleResponse, handleError);
+            .then(handleResponse, handleError)
             .then(user => {
             // login successful if there's a jwt token in the response
                 if (user && user.token) {
@@ -132,27 +162,21 @@ function deleteClient(index) {
     return postRequest('/Client.svc/Delete/' + index);
 }
 
-function logout(isClient) {
+function logoutClient() {
     // remove user from local storage to log user out
-    var item = isClient ? 'client' : 'groomer';
-    localStorage.removeItem(item);
+    localStorage.removeItem('client');
 }
 
 // 
 
 
-function postRequest (String info) {
+function postRequest (info) {
     const requestOptions = {
         method: 'GET',
         headers: authHeader()
     };
 
     return fetch(config.apiUrl + info , requestOptions).then(handleResponse, handleError);
-}
-
-function logout() {
-    // remove user from local storage to log user out
-    localStorage.removeItem('user');
 }
 
 function handleResponse(response) {
