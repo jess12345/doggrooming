@@ -1,15 +1,16 @@
 {
-  "name": "doggrooming",
+  "name": "aspnet-core-react-registration-login-example-client",
   "version": "1.0.0",
-  "private": true,
+  "description": "Client for React with ASP.NET Core User Registration and Login Example",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/cornflourblue/aspnet-core-react-registration-login-example.git"
+  },
+  "license": "MIT",
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "start": "webpack-dev-server --open"
   },
   "dependencies": {
-    "react-scripts": "1.1.4",
     "history": "^4.6.3",
     "react": "^16.0.0",
     "react-dom": "^16.0.0",
@@ -17,7 +18,8 @@
     "react-router-dom": "^4.1.2",
     "redux": "^3.7.2",
     "redux-logger": "^3.0.6",
-    "redux-thunk": "^2.2.0"
+    "redux-thunk": "^2.2.0",
+    "xml-js": "^1.6.2"
   },
   "devDependencies": {
     "babel-core": "^6.21.0",

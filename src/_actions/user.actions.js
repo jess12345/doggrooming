@@ -11,7 +11,7 @@ export const userActions = {
     deleteUser
 };
 
-function login(username, password, isGroomer = false) {
+function login(username, password, isGroomer = true) {
     return dispatch => {
         dispatch(request({ username }));
 

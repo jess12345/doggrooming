@@ -57,7 +57,6 @@ function updateGroomer( index, firstName, lastName, email, password) {
 function loginGroomer(email, password) {
         const requestOptions = {
         method: 'GET',
-        headers: authHeader()
     };
 
     return fetch(config.apiUrl + '/Groomer.svc/Authenticate/' + email + '/'+ password , requestOptions)
@@ -142,7 +141,6 @@ function updateClient(firstname, surname, email, password, homeAddress, mobilePh
 function loginClient(email, password) {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader()
     };
 
     return fetch(config.apiUrl + '/Client.svc/Authenticate/' + email + '/'+ password , requestOptions)
@@ -173,7 +171,6 @@ function logoutClient() {
 function postRequest (info) {
     const requestOptions = {
         method: 'GET',
-        headers: authHeader()
     };
 
     return fetch(config.apiUrl + info , requestOptions).then(handleResponse, handleError);
@@ -183,8 +180,12 @@ function handleResponse(response) {
     return new Promise((resolve, reject) => {
         if (response.ok) {
             // return json if it was returned in the response
+             
             var contentType = response.headers.get("content-type");
-            if (contentType && contentType.includes("application/json")) {
+            if (contentType && contentType.includes("application/xml")) {
+                response.text().then(text => console.log(text));
+                var convert = require('xml-js');
+                var result1 = convert.xml2json(xml, {compact: true, spaces: 4});
                 response.json().then(json => resolve(json));
             } else {
                 resolve();

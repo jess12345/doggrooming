@@ -1,3 +1,3 @@
 export const config = {
-    apiUrl: 'http://localhost:5000'
+    apiUrl: 'http://10.13.53.101:1000'
 };
