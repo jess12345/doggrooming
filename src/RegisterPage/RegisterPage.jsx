@@ -12,10 +12,13 @@ class RegisterPage extends React.Component {
             user: {
                 firstName: '',
                 lastName: '',
-                username: '',
-                password: ''
+                email: '',
+                password: '',
+                homeAddress: '', 
+                mobilePh: '', 
             },
-            submitted: false
+            submitted: false,
+            isGroomer: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -23,14 +26,21 @@ class RegisterPage extends React.Component {
     }
 
     handleChange(event) {
-        const { name, value } = event.target;
-        const { user } = this.state;
-        this.setState({
-            user: {
-                ...user,
-                [name]: value
-            }
-        });
+        const target = event.target;
+        if (target.type === 'checkbox') {
+            const value = target.checked;
+            const name = target.name;
+            this.setState({ [name]: value });
+        }else {
+            const { name, value } = event.target;
+            const { user } = this.state;
+            this.setState({
+                user: {
+                    ...user,
+                    [name]: value
+                }
+            });
+        }
     }
 
     handleSubmit(event) {
@@ -39,8 +49,8 @@ class RegisterPage extends React.Component {
         this.setState({ submitted: true });
         const { user } = this.state;
         const { dispatch } = this.props;
-        if (user.firstName && user.lastName && user.username && user.password) {
-            dispatch(userActions.register(user));
+        if (user.firstName && user.lastName && user.email && user.password) {
+            dispatch(userActions.register(user, isGroomer));
         }
     }
 
@@ -50,7 +60,25 @@ class RegisterPage extends React.Component {
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h2>Register</h2>
+                <label class="form-check-label">
+                    <input name="isGroomer" class="form-check-input"  type="checkbox" checked={this.state.isGroomer} onChange={this.handleChange} /> 
+                    Groomer 
+                </label>
                 <form name="form" onSubmit={this.handleSubmit}>
+                    <div className={'form-group' + (submitted && !user.email ? ' has-error' : '')}>
+                        <label htmlFor="email">Email</label>
+                        <input type="text" className="form-control" name="email" value={user.email} onChange={this.handleChange} />
+                        {submitted && !user.email &&
+                            <div className="help-block">Email is required</div>
+                        }
+                    </div>
+                    <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
+                        <label htmlFor="password">Password</label>
+                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
+                        {submitted && !user.password &&
+                            <div className="help-block">Password is required</div>
+                        }
+                    </div>
                     <div className={'form-group' + (submitted && !user.firstName ? ' has-error' : '')}>
                         <label htmlFor="firstName">First Name</label>
                         <input type="text" className="form-control" name="firstName" value={user.firstName} onChange={this.handleChange} />
@@ -65,19 +93,13 @@ class RegisterPage extends React.Component {
                             <div className="help-block">Last Name is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !user.username ? ' has-error' : '')}>
-                        <label htmlFor="username">Username</label>
-                        <input type="text" className="form-control" name="username" value={user.username} onChange={this.handleChange} />
-                        {submitted && !user.username &&
-                            <div className="help-block">Username is required</div>
-                        }
+                    <div className={'form-group'}>
+                        <label htmlFor="homeAddress">Home Address</label>
+                        <input type="text" className="form-control" name="homeAddress" value={user.homeAddress} onChange={this.handleChange} />
                     </div>
-                    <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
-                        {submitted && !user.password &&
-                            <div className="help-block">Password is required</div>
-                        }
+                    <div className={'form-group'}>
+                        <label htmlFor="mobilePh">Mobile Number</label>
+                        <input type="text" className="form-control" name="mobilePh" value={user.mobilePh} onChange={this.handleChange} />
                     </div>
                     <div className="form-group">
                         <button className="btn btn-primary">Register</button>

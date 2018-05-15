@@ -44,7 +44,11 @@ function getInfoOfGroomer(index) {
     return postRequest('/Groomer.svc/View/' + index);
 }
 
-function addNewGroomer(firstName, lastName, email, password) {
+function addNewGroomer(user) {
+    var firstName = user.firstName;
+    var lastName  = user.lastName;
+    var email     = user.email;
+    var password  = user.password;
     var groomerInfo = firstName + '/' + lastName + '/' + email + '/' + password;
     return postRequest('/Groomer.svc/Add/' + groomerInfo)
 }
@@ -126,9 +130,16 @@ function getClientInfo(index) {
     return postRequest('/Client.svc/View/' + index);
 }
 
-function addNewClient(firstname, surname, email, password, homeAddress, mobilePh, workPhone, homePhone) {
+function addNewClient(user) {
+    var firstName = user.firstName;
+    var lastName  = user.lastName;
+    var email     = user.email;
+    var password  = user.password;
+    var homeAddress = user.homeAddress;
+    var mobilePh = user.mobilePh;
+
     var info = firstname + '/' + surname + '/' + email + '/' + password + '/' 
-        + homeAddress + '/' + mobilePh + '/' + workPhone+ '/' + homePhone;
+        + homeAddress + '/' + mobilePh + '/' + ' '+ '/' + ' ';
     return postRequest('/Client.svc/Add/' + info);
 }
 
