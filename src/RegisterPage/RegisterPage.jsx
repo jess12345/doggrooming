@@ -47,7 +47,7 @@ class RegisterPage extends React.Component {
         event.preventDefault();
 
         this.setState({ submitted: true });
-        const { user } = this.state;
+        const { user, isGroomer } = this.state;
         const { dispatch } = this.props;
         if (user.firstName && user.lastName && user.email && user.password) {
             dispatch(userActions.register(user, isGroomer));
@@ -60,8 +60,8 @@ class RegisterPage extends React.Component {
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h2>Register</h2>
-                <label class="form-check-label">
-                    <input name="isGroomer" class="form-check-input"  type="checkbox" checked={this.state.isGroomer} onChange={this.handleChange} /> 
+                <label className="form-check-label">
+                    <input name="isGroomer" className="form-check-input"  type="checkbox" checked={this.state.isGroomer} onChange={this.handleChange} /> 
                     Groomer 
                 </label>
                 <form name="form" onSubmit={this.handleSubmit}>

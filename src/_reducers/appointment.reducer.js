@@ -6,11 +6,11 @@ export function appointments(state = {}, action) {
       return {
         loading: true
       };
-    case appointmentConstants.APPOINTMENT_ADD_SECCESS:
+    case appointmentConstants.APPOINTMENT_VIEW_SECCESS:
       return {
         items: action.appointments
       };
-    case appointmentConstants.APPOINTMENT_ADD_FAILURE:
+    case appointmentConstants.APPOINTMENT_VIEW_FAILURE:
       return { 
         error: action.error
       };

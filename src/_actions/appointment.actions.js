@@ -7,11 +7,12 @@ export const appointmentActions = {
     getAllAppointment,
 };
 
-function getAllAppointment(groomerID, clientID) {
+function getAllAppointment(userID, isGroomer) {
     return dispatch => {
         dispatch(request());
+        var getAppointment = isGroomer ? appointmentService.getGroomerAppointment : appointmentService.getClientAppointment; 
 
-        appointmentService.getAllAppointment(groomerID, clientID)
+        getAppointment(userID)
             .then(
                 appointments => dispatch(success(appointments)),
                 error => dispatch(failure(error))

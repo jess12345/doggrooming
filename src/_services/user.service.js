@@ -43,7 +43,9 @@ export const dogService = {
 };
 
 export const appointmentService = {
-    getAllAppointment,
+    getClientAppointment,
+    getGroomerAppointment,
+    deleteAppointment
 };
 
 // Groomer request
@@ -56,6 +58,7 @@ function getInfoOfGroomer(index) {
 }
 
 function addNewGroomer(user) {
+    console.log(user);
     var firstName = user.firstName;
     var lastName  = user.lastName;
     var email     = user.email;
@@ -142,6 +145,7 @@ function getClientInfo(index) {
 }
 
 function addNewClient(user) {
+    console.log(user);
     var firstName = user.firstName;
     var lastName  = user.lastName;
     var email     = user.email;
@@ -149,8 +153,8 @@ function addNewClient(user) {
     var homeAddress = user.homeAddress;
     var mobilePh = user.mobilePh;
 
-    var info = firstname + '/' + surname + '/' + email + '/' + password + '/' 
-        + homeAddress + '/' + mobilePh + '/' + ' '+ '/' + ' ';
+    var info = firstName + '/' + lastName + '/' + email + '/' + password + '/' 
+        + homeAddress + '/' + mobilePh + '/' + '000000000'+ '/' + '0000000000';
     return postRequest('/Client.svc/Add/' + info);
 }
 
@@ -187,13 +191,18 @@ function logoutClient() {
     localStorage.removeItem('client');
 }
 
-// TODO:Appointment
-function getAllAppointment(groomerID, clientID) {
-    return postRequest('/Appointment.svc/View/' + groomerID + '/'+ clientID);
+// Appointment
+function getClientAppointment(clientID) {
+    console.log('test   ' + clientID)
+    return postRequest('/Appointment.svc/ViewAllClient/' + clientID);
 }
 
-function deleteAppointment(groomerID, clientID) {
-    return postRequest('/Appointment.svc/View/' + groomerID + '/'+ clientID);
+function getGroomerAppointment(groomerID) {
+    return postRequest('/Appointment.svc/ViewAllGroomer/' + groomerID);
+}
+
+function deleteAppointment(groomerID, dogID, startTime) {
+    return postRequest('/Appointment.svc/View/' + groomerID + '/'+ clientID + '/'+ startTime);
 }
 
 // dog
@@ -254,7 +263,15 @@ function handleResponse(response) {
             }
         } else {
             // return error message from response body
-            response.text().then(text => reject(text));
+            response.text().then(function(text) {
+                console.log(text);
+                var substring = 'The exception message is ';
+                var substring2 = '. See server logs for more details.';
+                var index = text.indexOf(substring);
+                var index2 = text.indexOf(substring2);
+                var error = text.substring(index, index2);
+                reject(error);
+            });
         }
     });
 }

@@ -6,7 +6,9 @@ import { userActions, appointmentActions } from '../_actions';
 
 class HomePage extends React.Component {
     componentDidMount() {
-        this.props.dispatch(appointmentActions.getAllAppointment());
+        let user = this.props.user;
+        var userID = user.IdGroomer === undefined ? user.IdClient: user.IdGroomer;
+        this.props.dispatch(appointmentActions.getAllAppointment(userID, user.IdGroomer !== undefined));
     }
 
     handleDeleteUser(id) {
