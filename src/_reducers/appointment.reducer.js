@@ -1,6 +1,6 @@
 import { appointmentConstants } from '../_constants';
 
-export function appointment(state = {}, action) {
+export function appointments(state = {}, action) {
   switch (action.type) {
     case appointmentConstants.APPOINTMENT_VIEW:
       return {

@@ -2,28 +2,28 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { userActions } from '../_actions';
+import { userActions, appointmentActions } from '../_actions';
 
 class HomePage extends React.Component {
     componentDidMount() {
-        this.props.dispatch(userActions.getAll());
+        this.props.dispatch(appointmentActions.getAllAppointment());
     }
 
     handleDeleteUser(id) {
-        return (e) => this.props.dispatch(userActions.delete(id));
+        return; //(e) => this.props.dispatch(appointmentActions.delete(id));
     }
 
     render() {
-        const { user, users } = this.props;
+        const { user, appointments } = this.props;
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h1>Hi {user.firstName}!</h1>
                 <h3>All Appointment:</h3>
-                {users.loading && <em>Loading Appointment...</em>}
-                {users.error && <span className="text-danger">ERROR: {users.error}</span>}
-                {users.items &&
+                {appointments.loading && <em>Loading Appointment...</em>}
+                {appointments.error && <span className="text-danger">ERROR: {appointments.error}</span>}
+                {appointments.items &&
                     <ul>
-                        {users.items.map((user, index) =>
+                        {appointments.items.map((user, index) =>
                             <li key={user.id}>
                                 {user.firstName + ' ' + user.lastName}
                                 {
@@ -44,11 +44,11 @@ class HomePage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { users, authentication } = state;
+    const { appointments, authentication } = state;
     const { user } = authentication;
     return {
         user,
-        users
+        appointments
     };
 }
 

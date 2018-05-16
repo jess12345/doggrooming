@@ -1,5 +1,5 @@
 import { userConstants, appointmentConstants } from '../_constants';
-import { clientService, groomerService, dogService, appointmentService } from '../_services';
+import { clientService, groomerService } from '../_services';
 import { alertActions } from './';
 import { history } from '../_helpers';
 
@@ -8,10 +8,6 @@ export const userActions = {
     logout,
     register,
     deleteUser
-};
-
-export const appointActions = {
-    getAllAppointment,
 };
 
 function login(username, password, isGroomer = true) {
@@ -88,20 +84,4 @@ function deleteUser(id, isGroomer = false) {
     function request(id) { return { type: userConstants.DELETE_REQUEST, id } }
     function success(id) { return { type: userConstants.DELETE_SUCCESS, id } }
     function failure(id, error) { return { type: userConstants.DELETE_FAILURE, id, error } }
-}
-
-function getAllAppointment(groomerID, clientID) {
-    return dispatch => {
-        dispatch(request());
-
-        appointmentService.getAllAppointment(groomerID, clientID)
-            .then(
-                users => dispatch(success(users)),
-                error => dispatch(failure(error))
-            );
-    };
-
-    function request() { return { type: userConstants.GETALL_REQUEST } }
-    function success(users) { return { type: userConstants.GETALL_SUCCESS, users } }
-    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
 }
