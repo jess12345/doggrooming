@@ -35,6 +35,17 @@ export const clientService = {
     logoutClient
 };
 
+export const dogService = {
+    getAllDogs,
+    addNewDog,
+    updateDog,
+    deleteDog
+};
+
+export const appointmentService = {
+    getAllAppointment,
+};
+
 // Groomer request
 function getAllGroomer() {
     return postRequest('/Groomer.svc/ViewAll')
@@ -176,7 +187,48 @@ function logoutClient() {
     localStorage.removeItem('client');
 }
 
-// 
+// TODO:Appointment
+function getAllAppointment(groomerID, clientID) {
+    return postRequest('/Appointment.svc/View/' + groomerID + '/'+ clientID);
+}
+
+function deleteAppointment(groomerID, clientID) {
+    return postRequest('/Appointment.svc/View/' + groomerID + '/'+ clientID);
+}
+
+// dog
+
+function getAllDogs(clientID) {
+    return postRequest('/Dog.svc/View/' + clientID);
+}
+
+function updateDog(dog) {
+    var idDog       = user.idDog;
+    var idClient    = user.idClient;
+    var name        = user.name;
+    var birthDate   = user.birthDate;
+    var idBreed     = user.idBreed;
+
+    var info = idDog + '/' + idClient + '/' + name + '/' + birthDate + '/' + idBreed;
+
+    return postRequest('/Dog.svc/Update/' + info);
+}
+
+function addNewDog(dog) {
+    var idClient    = user.idClient;
+    var name        = user.name;
+    var birthDate   = user.birthDate;
+    var idBreed     = user.idBreed;
+
+    var info = idClient + '/' + name + '/' + birthDate + '/' + idBreed;
+
+    return postRequest('/Dog.svc/Add/' + info);
+}
+
+function deleteDog(dogID) {
+    return postRequest('/Dog.svc/Delete/' + dogID);
+}
+
 
 
 function postRequest (info) {

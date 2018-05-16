@@ -18,9 +18,8 @@ class HomePage extends React.Component {
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h1>Hi {user.firstName}!</h1>
-                <p>You're logged in with React and ASP.NET Core 2.0!!</p>
-                <h3>All registered users:</h3>
-                {users.loading && <em>Loading users...</em>}
+                <h3>All Appointment:</h3>
+                {users.loading && <em>Loading Appointment...</em>}
                 {users.error && <span className="text-danger">ERROR: {users.error}</span>}
                 {users.items &&
                     <ul>
