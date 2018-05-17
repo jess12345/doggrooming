@@ -11,31 +11,52 @@ class HomePage extends React.Component {
         this.props.dispatch(appointmentActions.getAllAppointment(userID, user.IdGroomer !== undefined));
     }
 
-    handleDeleteUser(id) {
+    handleDeleteUser(appointment) {
         return; //(e) => this.props.dispatch(appointmentActions.delete(id));
     }
 
     render() {
         const { user, appointments } = this.props;
         return (
-            <div className="col-md-6 col-md-offset-3">
-                <h1>Hi {user.firstName}!</h1>
+            <div className="col-md-6">
+                <h1>Hi {user.FirstName}!</h1>
                 <h3>All Appointment:</h3>
                 {appointments.loading && <em>Loading Appointment...</em>}
                 {appointments.error && <span className="text-danger">ERROR: {appointments.error}</span>}
                 {appointments.items &&
-                    <ul>
-                        {appointments.items.map((user, index) =>
-                            <li key={user.id}>
-                                {user.firstName + ' ' + user.lastName}
-                                {
+                    <table className="table">
+                    <thead>
+                        <tr>
+                          <th scope="col">ClientName</th>
+                          <th scope="col">Comments</th>
+                          <th scope="col">DogName</th>
+                          <th scope="col">Duration</th>
+                          <th scope="col">GroomerName</th>
+                          <th scope="col">GroomingTypeName</th>
+                          <th scope="col">Location</th>
+                          <th scope="col">StartTime</th>
+                        </tr>
+                    </thead>
+                        <tbody>
+                        {appointments.items.map((appointment, index) =>
+                            <tr>
+                              <td>{appointment.ClientName}</td>
+                              <td>{appointment.Comments}</td>
+                              <td>{appointment.DogName}</td>
+                              <td>{appointment.Duration}</td>
+                              <td>{appointment.GroomerName}</td>
+                              <td>{appointment.GroomingTypeName}</td>
+                              <td>{appointment.Location}</td>
+                              <td>{appointment.StartTime}</td>
+                              <td>{
                                     user.deleting ? <em> - Deleting...</em>
                                     : user.deleteError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
-                                    : <span> - <a onClick={this.handleDeleteUser(user.id)}>Delete</a></span>
-                                }
-                            </li>
+                                    : <span><a onClick={this.handleDeleteUser(appointment)}>Delete</a></span>
+                                }</td>
+                            </tr>
                         )}
-                    </ul>
+                        </tbody>
+                    </table>
                 }
                 <p>
                     <Link to="/login">Logout</Link>

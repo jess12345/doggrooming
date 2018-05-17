@@ -20,7 +20,7 @@ function getAllAppointment(userID, isGroomer) {
     };
 
     function request() { return { type: appointmentConstants.APPOINTMENT_VIEW } }
-    function success(appointments) { return { type: appointmentConstants.APPOINTMENT_VIEW_SECCESS, appointments } }
+    function success(appointments) {return { type: appointmentConstants.APPOINTMENT_VIEW_SECCESS, appointments } }
     function failure(error) { return { type: appointmentConstants.APPOINTMENT_VIEW_FAILURE, error } }
 }
 
