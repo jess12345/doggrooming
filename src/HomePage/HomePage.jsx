@@ -5,14 +5,18 @@ import { connect } from 'react-redux';
 import { userActions, appointmentActions } from '../_actions';
 
 class HomePage extends React.Component {
+    this.state = {
+            isGroomer: false,
+        };
+
     componentDidMount() {
         let user = this.props.user;
-        var userID = user.IdGroomer === undefined ? user.IdClient: user.IdGroomer;
-        this.props.dispatch(appointmentActions.getAllAppointment(userID, user.IdGroomer !== undefined));
-    }
+        this.setState({
+            isGroomer: user.IdGroomer === undefined
+        });
 
-    handleDeleteUser(appointment) {
-        return; //(e) => this.props.dispatch(appointmentActions.delete(id));
+        var userID = this.state.isGroomer ? user.IdClient: user.IdGroomer;
+        this.props.dispatch(appointmentActions.getAllAppointment(userID, this.state.isGroomer));
     }
 
     render() {
@@ -27,11 +31,13 @@ class HomePage extends React.Component {
                     <table className="table">
                     <thead>
                         <tr>
-                          <th scope="col">ClientName</th>
+                          { this.state.isGroomer ? 
+                                (<th scope="col">ClientName</th> ) :
+                                (<th scope="col">GroomerName</th>)
+                          }
                           <th scope="col">Comments</th>
                           <th scope="col">DogName</th>
                           <th scope="col">Duration</th>
-                          <th scope="col">GroomerName</th>
                           <th scope="col">GroomingTypeName</th>
                           <th scope="col">Location</th>
                           <th scope="col">StartTime</th>
@@ -40,19 +46,16 @@ class HomePage extends React.Component {
                         <tbody>
                         {appointments.items.map((appointment, index) =>
                             <tr>
-                              <td>{appointment.ClientName}</td>
+                              { this.state.isGroomer ? 
+                                (<td>{appointment.GroomerName}</td> ) :
+                                (<td>{appointment.ClientName}</td>)
+                              }
                               <td>{appointment.Comments}</td>
                               <td>{appointment.DogName}</td>
                               <td>{appointment.Duration}</td>
-                              <td>{appointment.GroomerName}</td>
                               <td>{appointment.GroomingTypeName}</td>
                               <td>{appointment.Location}</td>
                               <td>{appointment.StartTime}</td>
-                              <td>{
-                                    user.deleting ? <em> - Deleting...</em>
-                                    : user.deleteError ? <span className="text-danger"> - ERROR: {user.deleteError}</span>
-                                    : <span><a onClick={this.handleDeleteUser(appointment)}>Delete</a></span>
-                                }</td>
                             </tr>
                         )}
                         </tbody>
