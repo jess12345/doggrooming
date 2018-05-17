@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import { userActions } from '../_actions';
 
-class RegisterPage extends React.Component {
+class DogPage extends React.Component {
     constructor(props) {
         super(props);
 
@@ -23,6 +23,8 @@ class RegisterPage extends React.Component {
 
         this.handleChange = this.handleChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+
+        console.log('DogPage load');
     }
 
     handleChange(event) {
@@ -121,5 +123,5 @@ function mapStateToProps(state) {
     };
 }
 
-const connectedRegisterPage = connect(mapStateToProps)(RegisterPage);
-export { connectedRegisterPage as RegisterPage };
+const connectedDogPage = connect(mapStateToProps)(DogPage);
+export { connectedDogPage as DogPage };

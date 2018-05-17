@@ -5,22 +5,17 @@ import { connect } from 'react-redux';
 import { userActions, appointmentActions } from '../_actions';
 
 class HomePage extends React.Component {
-    this.state = {
-            isGroomer: false,
-        };
 
     componentDidMount() {
         let user = this.props.user;
-        this.setState({
-            isGroomer: user.IdGroomer === undefined
-        });
-
-        var userID = this.state.isGroomer ? user.IdClient: user.IdGroomer;
-        this.props.dispatch(appointmentActions.getAllAppointment(userID, this.state.isGroomer));
+        var isGroomer = user.IdGroomer !== undefined;
+        var userID = !isGroomer ? user.IdClient: user.IdGroomer;
+        this.props.dispatch(appointmentActions.getAllAppointment(userID, isGroomer));
     }
 
     render() {
         const { user, appointments } = this.props;
+        var isGroomer = user.IdGroomer !== undefined;
         return (
             <div className="col-md-6">
                 <h1>Hi {user.FirstName}!</h1>
@@ -31,7 +26,7 @@ class HomePage extends React.Component {
                     <table className="table">
                     <thead>
                         <tr>
-                          { this.state.isGroomer ? 
+                          { isGroomer ? 
                                 (<th scope="col">ClientName</th> ) :
                                 (<th scope="col">GroomerName</th>)
                           }
@@ -46,7 +41,7 @@ class HomePage extends React.Component {
                         <tbody>
                         {appointments.items.map((appointment, index) =>
                             <tr>
-                              { this.state.isGroomer ? 
+                              { isGroomer ? 
                                 (<td>{appointment.GroomerName}</td> ) :
                                 (<td>{appointment.ClientName}</td>)
                               }
@@ -61,9 +56,11 @@ class HomePage extends React.Component {
                         </tbody>
                     </table>
                 }
-                <p>
-                    <Link to="/login">Logout</Link>
-                </p>
+                <div>
+                    <Link to="/login">Logout  </Link>
+                    <Link to="/dog" className="btn btn-link">Manage Dog</Link>
+                    <Link to="/addappointment" className="btn btn-link">Add Appointment</Link>
+                </div>
             </div>
         );
     }
