@@ -2,124 +2,63 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { userActions } from '../_actions';
+import { userActions, appointmentActions } from '../_actions';
 
 class DogPage extends React.Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            user: {
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: '',
-                homeAddress: '', 
-                mobilePh: '', 
-            },
-            submitted: false,
-            isGroomer: false
-        };
-
-        this.handleChange = this.handleChange.bind(this);
-        this.handleSubmit = this.handleSubmit.bind(this);
-
-        console.log('DogPage load');
+    componentDidMount() {
+        let user = this.props.user;
+        var isGroomer = user.IdGroomer !== undefined;
+        var userID = !isGroomer ? user.IdClient: user.IdGroomer;
+        this.props.dispatch(appointmentActions.getAllDogs(userID));
     }
 
-    handleChange(event) {
-        const target = event.target;
-        if (target.type === 'checkbox') {
-            const value = target.checked;
-            const name = target.name;
-            this.setState({ [name]: value });
-        }else {
-            const { name, value } = event.target;
-            const { user } = this.state;
-            this.setState({
-                user: {
-                    ...user,
-                    [name]: value
-                }
-            });
-        }
-    }
-
-    handleSubmit(event) {
-        event.preventDefault();
-
-        this.setState({ submitted: true });
-        const { user, isGroomer } = this.state;
-        const { dispatch } = this.props;
-        if (user.firstName && user.lastName && user.email && user.password) {
-            dispatch(userActions.register(user, isGroomer));
-        }
-    }
 
     render() {
-        const { registering  } = this.props;
-        const { user, submitted } = this.state;
+        const { dogs } = this.props;
         return (
-            <div className="col-md-6 col-md-offset-3">
-                <h2>Register</h2>
-                <label className="form-check-label">
-                    <input name="isGroomer" className="form-check-input"  type="checkbox" checked={this.state.isGroomer} onChange={this.handleChange} /> 
-                    Groomer 
-                </label>
-                <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !user.email ? ' has-error' : '')}>
-                        <label htmlFor="email">Email</label>
-                        <input type="text" className="form-control" name="email" value={user.email} onChange={this.handleChange} />
-                        {submitted && !user.email &&
-                            <div className="help-block">Email is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
-                        {submitted && !user.password &&
-                            <div className="help-block">Password is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !user.firstName ? ' has-error' : '')}>
-                        <label htmlFor="firstName">First Name</label>
-                        <input type="text" className="form-control" name="firstName" value={user.firstName} onChange={this.handleChange} />
-                        {submitted && !user.firstName &&
-                            <div className="help-block">First Name is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !user.lastName ? ' has-error' : '')}>
-                        <label htmlFor="lastName">Last Name</label>
-                        <input type="text" className="form-control" name="lastName" value={user.lastName} onChange={this.handleChange} />
-                        {submitted && !user.lastName &&
-                            <div className="help-block">Last Name is required</div>
-                        }
-                    </div>
-                    <div className={'form-group'}>
-                        <label htmlFor="homeAddress">Home Address</label>
-                        <input type="text" className="form-control" name="homeAddress" value={user.homeAddress} onChange={this.handleChange} />
-                    </div>
-                    <div className={'form-group'}>
-                        <label htmlFor="mobilePh">Mobile Number</label>
-                        <input type="text" className="form-control" name="mobilePh" value={user.mobilePh} onChange={this.handleChange} />
-                    </div>
-                    <div className="form-group">
-                        <button className="btn btn-primary">Register</button>
-                        {registering && 
-                            <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                        }
-                        <Link to="/login" className="btn btn-link">Cancel</Link>
-                    </div>
-                </form>
+            <div className="col-md-6">
+                <h3>All Dogs:</h3>
+                {dogs.loading && <em>Loading Dogs...</em>}
+                {dogs.error && <span className="text-danger">ERROR: {dogs.error}</span>}
+                {dogs.items &&
+                    <table className="table">
+                    <thead>
+                        <tr>
+                          <th scope="col">DogName</th>
+                          <th scope="col">BirthDate</th>
+                          <th scope="col">BreedName</th>
+                          <th scope="col">ClientName</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {dogs.items.map((dog, index) =>
+                            <tr>
+                              <td>{dog.DogName}</td>
+                              <td>{dog.BirthDate}</td>
+                              <td>{dog.BreedName}</td>
+                              <td>{dog.ClientName}</td>
+                            </tr>
+                        )}
+                    </tbody>
+                    </table>
+                }
+                <div>
+                    <Link to="/">Back</Link>
+                    <Link to="/addDog" className="btn btn-link">Add Dog</Link>
+                </div>
             </div>
         );
     }
 }
 
 function mapStateToProps(state) {
-    const { registering } = state.registration;
+    console.log('mapStateToProps');
+    console.log(state);
+    const { dogs, authentication} = state;
+    const { user } = authentication;
     return {
-        registering
+        user,
+        dogs,
     };
 }
 
