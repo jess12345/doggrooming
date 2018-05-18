@@ -86,7 +86,7 @@ function loginGroomer(email, password) {
             // login successful if there's a jwt token in the response
                 if (user && user.token) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('groomer', JSON.stringify(user));
+                    localStorage.setItem('user', JSON.stringify(user));
                 }
 
                 return user;
@@ -178,7 +178,7 @@ function loginClient(email, password) {
             // login successful if there's a jwt token in the response
                 if (user && user.token) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
-                    localStorage.setItem('client', JSON.stringify(user));
+                    localStorage.setItem('user', JSON.stringify(user));
                 }
 
                 return user;

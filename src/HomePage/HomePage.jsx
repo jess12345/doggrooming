@@ -19,8 +19,12 @@ class HomePage extends React.Component {
     }
 
     render() {
-        const { user, appointments } = this.props;
+        const { user, appointments, breeds } = this.props;
         var isGroomer = user.IdGroomer !== undefined;
+        console.log('appointments');
+        console.log(appointments);
+        console.log(breeds);
+        console.log(this.props);
         return (
             <div className="col-md-6">
                 <h1>Hi {user.FirstName}!</h1>
@@ -72,11 +76,14 @@ class HomePage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { appointments, authentication } = state;
+    console.log('mapStateToProps');
+    console.log(state);
+    const { appointments, authentication, breeds } = state;
     const { user } = authentication;
     return {
         user,
-        appointments
+        appointments,
+        breeds
     };
 }
 

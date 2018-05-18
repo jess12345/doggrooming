@@ -14,42 +14,6 @@ export function appointments(state = {}, action) {
       return { 
         error: action.error
       };
-    case appointmentConstants.BREED_VIEW:
-      return {
-        loading: true
-      };
-    case appointmentConstants.BREED_VIEW_SECCESS:
-      return {
-        items: action.breeds
-      };
-    case appointmentConstants.BREED_VIEW_FAILURE:
-      return { 
-        error: action.error
-      };
-    case appointmentConstants.GROOMING_TYPE_VIEW:
-      return {
-        loading: true
-      };
-    case appointmentConstants.GROOMING_TYPE_VIEW_SECCESS:
-      return {
-        items: action.groomingTypes
-      };
-    case appointmentConstants.GROOMING_TYPE_VIEW_FAILURE:
-      return { 
-        error: action.error
-      };
-    case appointmentConstants.DOG_VIEW:
-      return {
-        loading: true
-      };
-    case appointmentConstants.DOG_VIEW_SECCESS:
-      return {
-        items: action.dogs
-      };
-    case appointmentConstants.DOG_VIEW_FAILURE:
-      return { 
-        error: action.error
-      };
     case appointmentConstants.APPOINTMENT_DELETE:
       // add 'deleting:true' property to user being deleted
       // TODO
