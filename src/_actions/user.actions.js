@@ -7,7 +7,8 @@ export const userActions = {
     login,
     logout,
     register,
-    deleteUser
+    deleteUser,
+    getAllGroomer
 };
 
 function login(username, password, isGroomer = true) {
@@ -85,4 +86,20 @@ function deleteUser(id, isGroomer = false) {
     function request(id) { return { type: userConstants.DELETE_REQUEST, id } }
     function success(id) { return { type: userConstants.DELETE_SUCCESS, id } }
     function failure(id, error) { return { type: userConstants.DELETE_FAILURE, id, error } }
+}
+
+function getAllGroomer () {
+    return dispatch => {
+        dispatch(request());
+
+        groomerService.getAllGroomer()
+            .then(
+                users => dispatch(success(users)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: userConstants.GETALL_REQUEST } }
+    function success(users) {return { type: userConstants.GETALL_SUCCESS, users } }
+    function failure(error) { return { type: userConstants.GETALL_FAILURE, error } }
 }

@@ -32,7 +32,7 @@ function addAppointment(appointment) {
     return dispatch => {
         dispatch(request(appointment));
 
-        groomerService.addAppointment(appointment)
+        appointmentService.addAppointment(appointment)
             .then(
                 () => { 
                     dispatch(success());
@@ -47,9 +47,9 @@ function addAppointment(appointment) {
             );
     };
 
-    function request(appointment) { return { type: userConstants.APPOINTMENT_ADD, appointment } }
-    function success(appointment) { return { type: userConstants.APPOINTMENT_ADD_SECCESS, appointment } }
-    function failure(error) { return { type: userConstants.APPOINTMENT_ADD_FAILURE, error } }
+    function request(appointment) { return { type: appointmentConstants.APPOINTMENT_ADD, appointment } }
+    function success(appointment) { return { type: appointmentConstants.APPOINTMENT_ADD_SECCESS, appointment } }
+    function failure(error) { return { type: appointmentConstants.APPOINTMENT_ADD_FAILURE, error } }
 }
 
 

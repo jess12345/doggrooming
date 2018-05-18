@@ -15,6 +15,7 @@ class HomePage extends React.Component {
           this.props.dispatch(appointmentActions.getAllBreed());
           this.props.dispatch(appointmentActions.getAllGroomingType());
           this.props.dispatch(appointmentActions.getAllDogs(userID));
+          this.props.dispatch(userActions.getAllGroomer());
         }
     }
 
@@ -78,12 +79,11 @@ class HomePage extends React.Component {
 function mapStateToProps(state) {
     console.log('mapStateToProps');
     console.log(state);
-    const { appointments, authentication, breeds } = state;
+    const { appointments, authentication} = state;
     const { user } = authentication;
     return {
         user,
         appointments,
-        breeds
     };
 }
 

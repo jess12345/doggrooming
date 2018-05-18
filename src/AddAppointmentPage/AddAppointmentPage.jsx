@@ -22,6 +22,9 @@ class AddAppointmentPage extends React.Component {
         };
 
         this.handleChange = this.handleChange.bind(this);
+        this.handleGroomerChange = this.handleGroomerChange.bind(this);
+        this.handleDogChange = this.handleDogChange.bind(this);
+        this.handleTypeChange = this.handleTypeChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -36,6 +39,36 @@ class AddAppointmentPage extends React.Component {
         });
     }
 
+    handleGroomerChange(event) {
+        const { appointment } = this.state;
+        this.setState({
+            appointment: {
+                ...appointment,
+                idGroomer: event.target.value
+            }
+        });
+    }
+
+    handleDogChange(event) {
+        const { appointment } = this.state;
+        this.setState({
+            appointment: {
+                ...appointment,
+                idDog: event.target.value
+            }
+        });
+    }
+
+    handleTypeChange(event) {
+        const { appointment } = this.state;
+        this.setState({
+            appointment: {
+                ...appointment,
+                idGroomingType: event.target.value
+            }
+        });
+    }
+
     handleSubmit(event) {
         event.preventDefault();
 
@@ -46,54 +79,78 @@ class AddAppointmentPage extends React.Component {
     }
 
     render() {
-        const { registering  } = this.props;
+        const { breeds, dogs, groomingTypes, users } = this.props;
         const { appointment, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
                 <h2>Add Appointment</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !user.email ? ' has-error' : '')}>
-                        <label htmlFor="email">Email</label>
-                        <input type="text" className="form-control" name="email" value={user.email} onChange={this.handleChange} />
-                        {submitted && !user.email &&
-                            <div className="help-block">Email is required</div>
+                    <div className={'form-group' + (submitted && !appointment.idGroomer ? ' has-error' : '')}>
+                        <label>
+                          Pick your favorite Groomer:
+                          <select value={appointment.idGroomer} onChange={this.handleGroomerChange}>
+                            <option value=""></option>
+                            {users.loading && <option value="">Loading Groomer...</option>}
+                            {users.error && <span className="text-danger">ERROR: {users.error}</span>}
+                            {users.items && users.items.map((groomer, index) =>
+                                <option value={groomer.IdGroomer}>{groomer.FirstName + " " + groomer.Surname}</option>
+                            )}
+                          </select>
+                        </label>
+                        {submitted && !appointment.idGroomer &&
+                            <div className="help-block">Groomer is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !user.password ? ' has-error' : '')}>
-                        <label htmlFor="password">Password</label>
-                        <input type="password" className="form-control" name="password" value={user.password} onChange={this.handleChange} />
-                        {submitted && !user.password &&
-                            <div className="help-block">Password is required</div>
+                    <div className={'form-group' + (submitted && !appointment.idDog ? ' has-error' : '')}>
+                        <label>
+                          Pick your Dog:
+                          <select value={appointment.idDog} onChange={this.handleDogChange}>
+                            <option value=""></option>
+                            {dogs.loading && <option value="">Loading Dog...</option>}
+                            {dogs.error && <span className="text-danger">ERROR: {dogs.error}</span>}
+                            {dogs.items && dogs.items.map((dog, index) =>
+                                <option value={dog.IdDog}>{dog.DogName + "-" + dog.BreedName}</option>
+                            )}
+                          </select>
+                        </label>
+                        {submitted && !appointment.IdDog &&
+                            <div className="help-block">Dog is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !user.firstName ? ' has-error' : '')}>
-                        <label htmlFor="firstName">First Name</label>
-                        <input type="text" className="form-control" name="firstName" value={user.firstName} onChange={this.handleChange} />
-                        {submitted && !user.firstName &&
-                            <div className="help-block">First Name is required</div>
+                    <div className={'form-group' + (submitted && !appointment.idGroomingType ? ' has-error' : '')}>
+                        <label>
+                          Pick your Grooming Type:
+                          <select value={appointment.idGroomingType} onChange={this.handleTypeChange}>
+                            <option value=""></option>
+                            {groomingTypes.loading && <option value="">Loading Type...</option>}
+                            {groomingTypes.error && <span className="text-danger">ERROR: {groomingTypes.error}</span>}
+                            {groomingTypes.items && groomingTypes.items.map((dog, index) =>
+                                <option value={dog.IdGroomerType}>{dog.Name}</option>
+                            )}
+                          </select>
+                        </label>
+                        {submitted && !appointment.IdDog &&
+                            <div className="help-block">Dog is required</div>
                         }
                     </div>
-                    <div className={'form-group' + (submitted && !user.lastName ? ' has-error' : '')}>
-                        <label htmlFor="lastName">Last Name</label>
-                        <input type="text" className="form-control" name="lastName" value={user.lastName} onChange={this.handleChange} />
-                        {submitted && !user.lastName &&
-                            <div className="help-block">Last Name is required</div>
+                    <div className={'form-group' + (submitted && !appointment.startTime ? ' has-error' : '')}>
+                        <label htmlFor="startTime">Start Time</label>
+                        <input type="text" className="form-control" name="startTime" value={appointment.startTime} onChange={this.handleChange} />
+                        {submitted && !appointment.startTime &&
+                            <div className="help-block">Start time is required</div>
                         }
                     </div>
                     <div className={'form-group'}>
-                        <label htmlFor="homeAddress">Home Address</label>
-                        <input type="text" className="form-control" name="homeAddress" value={user.homeAddress} onChange={this.handleChange} />
+                        <label htmlFor="duration">Duration</label>
+                        <input type="text" className="form-control" name="duration" value={appointment.duration} onChange={this.handleChange} />
                     </div>
                     <div className={'form-group'}>
-                        <label htmlFor="mobilePh">Mobile Number</label>
-                        <input type="text" className="form-control" name="mobilePh" value={user.mobilePh} onChange={this.handleChange} />
+                        <label htmlFor="comments">Comments</label>
+                        <input type="text" className="form-control" name="comments" value={appointment.comments} onChange={this.handleChange} />
                     </div>
                     <div className="form-group">
-                        <button className="btn btn-primary">Register</button>
-                        {registering && 
-                            <img src="data:image/gif;base64,R0lGODlhEAAQAPIAAP///wAAAMLCwkJCQgAAAGJiYoKCgpKSkiH/C05FVFNDQVBFMi4wAwEAAAAh/hpDcmVhdGVkIHdpdGggYWpheGxvYWQuaW5mbwAh+QQJCgAAACwAAAAAEAAQAAADMwi63P4wyklrE2MIOggZnAdOmGYJRbExwroUmcG2LmDEwnHQLVsYOd2mBzkYDAdKa+dIAAAh+QQJCgAAACwAAAAAEAAQAAADNAi63P5OjCEgG4QMu7DmikRxQlFUYDEZIGBMRVsaqHwctXXf7WEYB4Ag1xjihkMZsiUkKhIAIfkECQoAAAAsAAAAABAAEAAAAzYIujIjK8pByJDMlFYvBoVjHA70GU7xSUJhmKtwHPAKzLO9HMaoKwJZ7Rf8AYPDDzKpZBqfvwQAIfkECQoAAAAsAAAAABAAEAAAAzMIumIlK8oyhpHsnFZfhYumCYUhDAQxRIdhHBGqRoKw0R8DYlJd8z0fMDgsGo/IpHI5TAAAIfkECQoAAAAsAAAAABAAEAAAAzIIunInK0rnZBTwGPNMgQwmdsNgXGJUlIWEuR5oWUIpz8pAEAMe6TwfwyYsGo/IpFKSAAAh+QQJCgAAACwAAAAAEAAQAAADMwi6IMKQORfjdOe82p4wGccc4CEuQradylesojEMBgsUc2G7sDX3lQGBMLAJibufbSlKAAAh+QQJCgAAACwAAAAAEAAQAAADMgi63P7wCRHZnFVdmgHu2nFwlWCI3WGc3TSWhUFGxTAUkGCbtgENBMJAEJsxgMLWzpEAACH5BAkKAAAALAAAAAAQABAAAAMyCLrc/jDKSatlQtScKdceCAjDII7HcQ4EMTCpyrCuUBjCYRgHVtqlAiB1YhiCnlsRkAAAOwAAAAAAAAAAAA==" />
-                        }
-                        <Link to="/login" className="btn btn-link">Cancel</Link>
+                        <button className="btn btn-primary">Submit</button>
+                        <Link to="/" className="btn btn-link">Cancel</Link>
                     </div>
                 </form>
             </div>
@@ -102,9 +159,12 @@ class AddAppointmentPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { registering } = state.registration;
+    const { breeds, dogs, groomingTypes, users } = state;
     return {
-        registering
+        breeds, 
+        dogs, 
+        groomingTypes, 
+        users
     };
 }
 
