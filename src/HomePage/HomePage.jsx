@@ -11,6 +11,11 @@ class HomePage extends React.Component {
         var isGroomer = user.IdGroomer !== undefined;
         var userID = !isGroomer ? user.IdClient: user.IdGroomer;
         this.props.dispatch(appointmentActions.getAllAppointment(userID, isGroomer));
+        if (!isGroomer) {
+          this.props.dispatch(appointmentActions.getAllBreed());
+          this.props.dispatch(appointmentActions.getAllGroomingType());
+          this.props.dispatch(appointmentActions.getAllDogs(userID));
+        }
     }
 
     render() {
@@ -58,8 +63,8 @@ class HomePage extends React.Component {
                 }
                 <div>
                     <Link to="/login">Logout  </Link>
-                    <Link to="/dog" className="btn btn-link">Manage Dog</Link>
-                    <Link to="/addappointment" className="btn btn-link">Add Appointment</Link>
+                    { !isGroomer && <Link to="/dog" className="btn btn-link">Manage Dog</Link>}
+                    { !isGroomer && <Link to="/addappointment" className="btn btn-link">Add Appointment</Link>}
                 </div>
             </div>
         );

@@ -2,23 +2,23 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { connect } from 'react-redux';
 
-import { userActions } from '../_actions';
+import { appointmentActions } from '../_actions';
 
-class AddAppointmentPage extends React.Component {
+class AddAppointmentPage extends React.Component {    
     constructor(props) {
         super(props);
 
         this.state = {
-            user: {
-                firstName: '',
-                lastName: '',
-                email: '',
-                password: '',
-                homeAddress: '', 
-                mobilePh: '', 
+            appointment: {
+                idGroomer: '',
+                idDog: '',
+                startTime: '',
+                idGroomingType: '',
+                duration: '', 
+                comments: '', 
             },
+
             submitted: false,
-            isGroomer: false
         };
 
         this.handleChange = this.handleChange.bind(this);
@@ -26,44 +26,31 @@ class AddAppointmentPage extends React.Component {
     }
 
     handleChange(event) {
-        const target = event.target;
-        if (target.type === 'checkbox') {
-            const value = target.checked;
-            const name = target.name;
-            this.setState({ [name]: value });
-        }else {
-            const { name, value } = event.target;
-            const { user } = this.state;
-            this.setState({
-                user: {
-                    ...user,
-                    [name]: value
-                }
-            });
-        }
+        const { name, value } = event.target;
+        const { appointment } = this.state;
+        this.setState({
+            appointment: {
+                ...appointment,
+                [name]: value
+            }
+        });
     }
 
     handleSubmit(event) {
         event.preventDefault();
 
         this.setState({ submitted: true });
-        const { user, isGroomer } = this.state;
+        const { appointment } = this.state;
         const { dispatch } = this.props;
-        if (user.firstName && user.lastName && user.email && user.password) {
-            dispatch(userActions.register(user, isGroomer));
-        }
+        dispatch(appointmentActions.addAppointment(appointment));
     }
 
     render() {
         const { registering  } = this.props;
-        const { user, submitted } = this.state;
+        const { appointment, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h2>Register</h2>
-                <label className="form-check-label">
-                    <input name="isGroomer" className="form-check-input"  type="checkbox" checked={this.state.isGroomer} onChange={this.handleChange} /> 
-                    Groomer 
-                </label>
+                <h2>Add Appointment</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
                     <div className={'form-group' + (submitted && !user.email ? ' has-error' : '')}>
                         <label htmlFor="email">Email</label>

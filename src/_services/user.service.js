@@ -45,7 +45,10 @@ export const dogService = {
 export const appointmentService = {
     getClientAppointment,
     getGroomerAppointment,
-    deleteAppointment
+    addAppointment,
+    deleteAppointment,
+    getAllBreed,
+    getAllGroomingType
 };
 
 // Groomer request
@@ -201,6 +204,18 @@ function getGroomerAppointment(groomerID) {
     return postRequest('/Appointment.svc/ViewAllGroomer/' + groomerID);
 }
 
+function addAppointment(appointment) {
+    var idGroomer       = appointment.idGroomer;
+    var idDog           = appointment.idDog;
+    var startTime       = appointment.startTime;
+    var idGroomingType  = appointment.idGroomingType;
+    var duration        = appointment.duration;
+    var comments        = appointment.comments;
+
+    var info = idGroomer + '/' + idDog + '/' + startTime + '/' + idGroomingType + '/' + duration + '/' + comments;
+    return postRequest('/Appointment.svc/Add/' + info);
+}
+
 function deleteAppointment(groomerID, dogID, startTime) {
     return postRequest('/Appointment.svc/View/' + groomerID + '/'+ clientID + '/'+ startTime);
 }
@@ -208,7 +223,7 @@ function deleteAppointment(groomerID, dogID, startTime) {
 // dog
 
 function getAllDogs(clientID) {
-    return postRequest('/Dog.svc/View/' + clientID);
+    return postRequest('/Dog.svc/ViewAllClient/' + clientID);
 }
 
 function updateDog(dog) {
