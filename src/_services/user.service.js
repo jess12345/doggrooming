@@ -84,9 +84,11 @@ function loginGroomer(email, password) {
             .then(handleResponse, handleError)
             .then(user => {
             // login successful if there's a jwt token in the response
-                if (user && user.token) {
+                if (user) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('user', JSON.stringify(user));
+                    console.log('localStorage.getItem()');
+                    console.log(localStorage.getItem('user'));
                 }
 
                 return user;
@@ -176,7 +178,7 @@ function loginClient(email, password) {
             .then(handleResponse, handleError)
             .then(user => {
             // login successful if there's a jwt token in the response
-                if (user && user.token) {
+                if (user) {
                 // store user details and jwt token in local storage to keep user logged in between page refreshes
                     localStorage.setItem('user', JSON.stringify(user));
                 }

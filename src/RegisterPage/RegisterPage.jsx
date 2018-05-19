@@ -96,6 +96,9 @@ class RegisterPage extends React.Component {
                     <div className={'form-group'}>
                         <label htmlFor="homeAddress">Home Address</label>
                         <input type="text" className="form-control" name="homeAddress" value={user.homeAddress} onChange={this.handleChange} />
+                        {submitted && !user.homeAddress && user.homeAddress.indexof('/') != -1 &&
+                            <div className="help-block">Last Name is required</div>
+                        }
                     </div>
                     <div className={'form-group'}>
                         <label htmlFor="mobilePh">Mobile Number</label>

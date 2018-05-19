@@ -9,22 +9,18 @@ class AddDogPage extends React.Component {
         super(props);
 
         this.state = {
-            appointment: {
-                idGroomer: '',
-                idDog: '',
-                startTime: '',
-                idGroomingType: '',
-                duration: '', 
-                comments: '', 
+            dog: {
+                idClient: '',
+                name: '',
+                birthDate: '',
+                idBreed: '',
             },
 
             submitted: false,
         };
 
         this.handleChange = this.handleChange.bind(this);
-        this.handleGroomerChange = this.handleGroomerChange.bind(this);
-        this.handleDogChange = this.handleDogChange.bind(this);
-        this.handleTypeChange = this.handleTypeChange.bind(this);
+        this.handleBreedChange = this.handleBreedChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -39,32 +35,12 @@ class AddDogPage extends React.Component {
         });
     }
 
-    handleGroomerChange(event) {
+    handleBreedChange(event) {
         const { appointment } = this.state;
         this.setState({
             appointment: {
                 ...appointment,
-                idGroomer: event.target.value
-            }
-        });
-    }
-
-    handleDogChange(event) {
-        const { appointment } = this.state;
-        this.setState({
-            appointment: {
-                ...appointment,
-                idDog: event.target.value
-            }
-        });
-    }
-
-    handleTypeChange(event) {
-        const { appointment } = this.state;
-        this.setState({
-            appointment: {
-                ...appointment,
-                idGroomingType: event.target.value
+                idBreed: event.target.value
             }
         });
     }
