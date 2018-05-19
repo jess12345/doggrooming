@@ -8,7 +8,8 @@ export const appointmentActions = {
     addAppointment,
     getAllBreed,
     getAllGroomingType,
-    getAllDogs
+    getAllDogs,
+    addNewDog,
 };
 
 function getAllAppointment(userID, isGroomer) {
@@ -28,6 +29,22 @@ function getAllAppointment(userID, isGroomer) {
     function failure(error) { return { type: appointmentConstants.APPOINTMENT_VIEW_FAILURE, error } }
 }
 
+function getAllDogs (clientID) {
+    return dispatch => {
+        dispatch(request());
+
+        dogService.getAllDogs(clientID)
+            .then(
+                dogs => dispatch(success(dogs)),
+                error => dispatch(failure(error))
+            );
+    };
+
+    function request() { return { type: appointmentConstants.DOG_VIEW } }
+    function success(dogs) {return { type: appointmentConstants.DOG_VIEW_SECCESS, dogs } }
+    function failure(error) { return { type: appointmentConstants.DOG_VIEW_FAILURE, error } }
+}
+
 function addAppointment(appointment) {
     return dispatch => {
         dispatch(request(appointment));
@@ -40,7 +57,6 @@ function addAppointment(appointment) {
                     dispatch(alertActions.success('Add appointment successful'));
                 },
                 error => {
-                    console.log(error);
                     dispatch(failure(error));
                     dispatch(alertActions.error(error));
                 }
@@ -85,19 +101,25 @@ function getAllGroomingType () {
     function failure(error) { return { type: appointmentConstants.GROOMING_TYPE_VIEW_FAILURE, error } }
 }
 
-function getAllDogs (clientID) {
+function addNewDog (dog) {
     return dispatch => {
         dispatch(request());
-
-        dogService.getAllDogs(clientID)
+        dogService.addNewDog(dog)
             .then(
-                dogs => dispatch(success(dogs)),
-                error => dispatch(failure(error))
+                () => { 
+                    dispatch(success(dog));
+                    dispatch(alertActions.success('Add dog successful'));
+                    history.push('/dog');
+                },
+                error => {
+                    dispatch(failure(error));
+                    dispatch(alertActions.error(error));
+                }
             );
     };
 
-    function request() { return { type: appointmentConstants.DOG_VIEW } }
-    function success(dogs) {return { type: appointmentConstants.DOG_VIEW_SECCESS, dogs } }
-    function failure(error) { return { type: appointmentConstants.DOG_VIEW_FAILURE, error } }
+    function request() { return { type: appointmentConstants.DOG_ADD } }
+    function success(dog) {return { type: appointmentConstants.DOG_ADD_SECCESS, dog } }
+    function failure(error) { return { type: appointmentConstants.DOG_ADD_FAILURE, error } }
 }
 

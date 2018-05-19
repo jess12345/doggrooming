@@ -20,8 +20,7 @@ class DogPage extends React.Component {
                 <h3>All Dogs:</h3>
                 {dogs.loading && <em>Loading Dogs...</em>}
                 {dogs.error && <span className="text-danger">ERROR: {dogs.error}</span>}
-                {dogs.items &&
-                    <table className="table">
+                <table className="table">
                     <thead>
                         <tr>
                           <th scope="col">DogName</th>
@@ -30,6 +29,8 @@ class DogPage extends React.Component {
                           <th scope="col">ClientName</th>
                         </tr>
                     </thead>
+                {dogs.items &&
+                    
                     <tbody>
                         {dogs.items.map((dog, index) =>
                             <tr>
@@ -40,8 +41,9 @@ class DogPage extends React.Component {
                             </tr>
                         )}
                     </tbody>
-                    </table>
+                    
                 }
+                </table>
                 <div>
                     <Link to="/">Back</Link>
                     <Link to="/addDog" className="btn btn-link">Add Dog</Link>

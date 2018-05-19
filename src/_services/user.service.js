@@ -241,10 +241,10 @@ function updateDog(dog) {
 }
 
 function addNewDog(dog) {
-    var idClient    = user.idClient;
-    var name        = user.name;
-    var birthDate   = user.birthDate;
-    var idBreed     = user.idBreed;
+    var idClient    = dog.idClient;
+    var name        = dog.name;
+    var birthDate   = dog.birthDate;
+    var idBreed     = dog.idBreed;
 
     var info = idClient + '/' + name + '/' + birthDate + '/' + idBreed;
 
@@ -272,6 +272,7 @@ function handleResponse(response) {
             var contentType = response.headers.get("content-type");
             if (contentType && contentType.includes("application/json")) {
                 response.json().then(function(json) {
+                    console.log('handleResponse');
                     console.log(json);
                     resolve(json); 
                 });

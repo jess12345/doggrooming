@@ -26,20 +26,21 @@ class AddDogPage extends React.Component {
 
     handleChange(event) {
         const { name, value } = event.target;
-        const { appointment } = this.state;
+        console.log(name + value);
+        const { dog } = this.state;
         this.setState({
-            appointment: {
-                ...appointment,
+            dog: {
+                ...dog,
                 [name]: value
             }
         });
     }
 
     handleBreedChange(event) {
-        const { appointment } = this.state;
+        const { dog } = this.state;
         this.setState({
-            appointment: {
-                ...appointment,
+            dog: {
+                ...dog,
                 idBreed: event.target.value
             }
         });
@@ -49,80 +50,42 @@ class AddDogPage extends React.Component {
         event.preventDefault();
 
         this.setState({ submitted: true });
-        const { appointment } = this.state;
-        const { dispatch } = this.props;
-        dispatch(appointmentActions.addAppointment(appointment));
+        const { dog } = this.state;
+        const { dispatch, user } = this.props;
+        dog.idClient = user.IdClient;
+        dispatch(appointmentActions.addNewDog(dog));
     }
 
     render() {
-        const { breeds, dogs, groomingTypes, users } = this.props;
-        const { appointment, submitted } = this.state;
+        const { breeds, dogs, groomingTypes } = this.props;
+        const { dog, submitted } = this.state;
         return (
             <div className="col-md-6 col-md-offset-3">
-                <h2>Add Appointment</h2>
+                <h2>Add Dog</h2>
                 <form name="form" onSubmit={this.handleSubmit}>
-                    <div className={'form-group' + (submitted && !appointment.idGroomer ? ' has-error' : '')}>
+                    <div className={'form-group' + (submitted && !dog.name ? ' has-error' : '')}>
+                        <label htmlFor="name">Name</label>
+                        <input type="text" className="form-control" name="name" value={dog.name} onChange={this.handleChange} />
+                    </div>
+                    <div className={'form-group' + (submitted && !dog.birthDate ? ' has-error' : '')}>
+                        <label htmlFor="birthDate">Birth Date</label>
+                        <input type="text" className="form-control" name="birthDate" value={dog.birthDate} onChange={this.handleChange} />
+                    </div>
+                    <div className={'form-group' + (submitted && !dog.idBreed ? ' has-error' : '')}>
                         <label>
-                          Pick your favorite Groomer:
-                          <select value={appointment.idGroomer} onChange={this.handleGroomerChange}>
+                          Choose Breed:
+                          <select value={dog.idBreed} onChange={this.handleBreedChange}>
                             <option value=""></option>
-                            {users.loading && <option value="">Loading Groomer...</option>}
-                            {users.error && <span className="text-danger">ERROR: {users.error}</span>}
-                            {users.items && users.items.map((groomer, index) =>
-                                <option value={groomer.IdGroomer}>{groomer.FirstName + " " + groomer.Surname}</option>
+                            {breeds.loading && <option value="">Loading Breed...</option>}
+                            {breeds.error && <span className="text-danger">ERROR: {dogs.error}</span>}
+                            {breeds.items && breeds.items.map((breed, index) =>
+                                <option value={breed.IdBreed}>{breed.Name}</option>
                             )}
                           </select>
                         </label>
-                        {submitted && !appointment.idGroomer &&
-                            <div className="help-block">Groomer is required</div>
+                        {submitted && !dog.idBreed &&
+                            <div className="help-block">Breed is required</div>
                         }
-                    </div>
-                    <div className={'form-group' + (submitted && !appointment.idDog ? ' has-error' : '')}>
-                        <label>
-                          Pick your Dog:
-                          <select value={appointment.idDog} onChange={this.handleDogChange}>
-                            <option value=""></option>
-                            {dogs.loading && <option value="">Loading Dog...</option>}
-                            {dogs.error && <span className="text-danger">ERROR: {dogs.error}</span>}
-                            {dogs.items && dogs.items.map((dog, index) =>
-                                <option value={dog.IdDog}>{dog.DogName + "-" + dog.BreedName}</option>
-                            )}
-                          </select>
-                        </label>
-                        {submitted && !appointment.IdDog &&
-                            <div className="help-block">Dog is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !appointment.idGroomingType ? ' has-error' : '')}>
-                        <label>
-                          Pick your Grooming Type:
-                          <select value={appointment.idGroomingType} onChange={this.handleTypeChange}>
-                            <option value=""></option>
-                            {groomingTypes.loading && <option value="">Loading Type...</option>}
-                            {groomingTypes.error && <span className="text-danger">ERROR: {groomingTypes.error}</span>}
-                            {groomingTypes.items && groomingTypes.items.map((dog, index) =>
-                                <option value={dog.IdGroomerType}>{dog.Name}</option>
-                            )}
-                          </select>
-                        </label>
-                        {submitted && !appointment.IdDog &&
-                            <div className="help-block">Dog is required</div>
-                        }
-                    </div>
-                    <div className={'form-group' + (submitted && !appointment.startTime ? ' has-error' : '')}>
-                        <label htmlFor="startTime">Start Time</label>
-                        <input type="text" className="form-control" name="startTime" value={appointment.startTime} onChange={this.handleChange} />
-                        {submitted && !appointment.startTime &&
-                            <div className="help-block">Start time is required</div>
-                        }
-                    </div>
-                    <div className={'form-group'}>
-                        <label htmlFor="duration">Duration</label>
-                        <input type="text" className="form-control" name="duration" value={appointment.duration} onChange={this.handleChange} />
-                    </div>
-                    <div className={'form-group'}>
-                        <label htmlFor="comments">Comments</label>
-                        <input type="text" className="form-control" name="comments" value={appointment.comments} onChange={this.handleChange} />
                     </div>
                     <div className="form-group">
                         <button className="btn btn-primary">Submit</button>
@@ -135,12 +98,13 @@ class AddDogPage extends React.Component {
 }
 
 function mapStateToProps(state) {
-    const { breeds, dogs, groomingTypes, users } = state;
+    const { breeds, dogs, groomingTypes, authentication } = state;
+    const { user } = authentication;
     return {
         breeds, 
         dogs, 
         groomingTypes, 
-        users
+        user
     };
 }
 
