@@ -19,6 +19,10 @@ class HomePage extends React.Component {
         }
     }
 
+    handleDeleteUser(appointment) {
+        return (e) => this.props.dispatch(appointmentActions.deleteAppointment(appointment));
+    }
+
     render() {
         const { user, appointments, breeds } = this.props;
         var isGroomer = user.IdGroomer !== undefined;
@@ -46,6 +50,7 @@ class HomePage extends React.Component {
                           <th scope="col">GroomingTypeName</th>
                           <th scope="col">Location</th>
                           <th scope="col">StartTime</th>
+                          <th scope="col">#</th>
                         </tr>
                     </thead>
                         <tbody>
@@ -61,6 +66,12 @@ class HomePage extends React.Component {
                               <td>{appointment.GroomingTypeName}</td>
                               <td>{appointment.Location}</td>
                               <td>{appointment.StartTime}</td>
+                              <td>
+                              {
+                                    appointment.deleting ? <em> - Deleting...</em>
+                                    : <span> <a onClick={this.handleDeleteUser(appointment)}>Delete</a></span>
+                                }
+                              </td>
                             </tr>
                         )}
                         </tbody>

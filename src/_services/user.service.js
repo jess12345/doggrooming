@@ -218,8 +218,24 @@ function addAppointment(appointment) {
     return postRequest('/Appointment.svc/Add/' + info);
 }
 
-function deleteAppointment(groomerID, dogID, startTime) {
-    return postRequest('/Appointment.svc/View/' + groomerID + '/'+ clientID + '/'+ startTime);
+function deleteAppointment(appointment) {
+    var IdGroomer = appointment.IdGroomer;
+    var dogID =appointment.IdDog; 
+    var startTime = new Date(appointment.StartTime);
+    var timeStr =  "" + startTime.getFullYear() + "-" + startTime.getDate() + "-" + (startTime.getMonth()+1) + "-"
+        + startTime.getHours() + "-" + startTime.getMinutes() + "-" + startTime.getSeconds();
+    console.log('deleteAppointment');
+    console.log(startTime);
+    console.log(timeStr);
+    return postRequest('/Appointment.svc/delete/' + IdGroomer + '/'+ dogID + '/'+ timeStr);
+}
+
+//"12/05/2018 2:20:30 PM"
+function reformDate (timeStr) {
+    var year = timeStr.substring(6,9);
+    var month = timeStr.substring(3,4);
+    var day = timeStr.substring(0,1);
+    var hour = timeStr.substring(11,11);
 }
 
 // dog

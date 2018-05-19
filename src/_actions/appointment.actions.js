@@ -10,6 +10,7 @@ export const appointmentActions = {
     getAllGroomingType,
     getAllDogs,
     addNewDog,
+    deleteAppointment,
 };
 
 function getAllAppointment(userID, isGroomer) {
@@ -27,6 +28,28 @@ function getAllAppointment(userID, isGroomer) {
     function request() { return { type: appointmentConstants.APPOINTMENT_VIEW } }
     function success(appointments) {return { type: appointmentConstants.APPOINTMENT_VIEW_SECCESS, appointments } }
     function failure(error) { return { type: appointmentConstants.APPOINTMENT_VIEW_FAILURE, error } }
+}
+
+function deleteAppointment(appointment) {
+    return dispatch => {
+        dispatch(request(appointment));
+
+        appointmentService.deleteAppointment(appointment)
+            .then(
+                () => { 
+                    dispatch(success(appointment));
+                    dispatch(alertActions.success('Delete appointment successfully'));
+                },
+                error => {
+                    dispatch(failure(appointment, error));
+                    dispatch(alertActions.error(error));
+                }
+            );
+    };
+
+    function request(appointment) { return { type: appointmentConstants.APPOINTMENT_DELETE, appointment } }
+    function success(appointment) { return { type: appointmentConstants.APPOINTMENT_DELETE_SUCCESS, appointment } }
+    function failure(appointment, error) { return { type: appointmentConstants.APPOINTMENT_DELETE_FAILURE, appointment, error } }
 }
 
 function getAllDogs (clientID) {
